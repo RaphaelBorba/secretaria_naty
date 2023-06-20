@@ -5,6 +5,8 @@ import api from '@/service/API'
 import { Button } from '@mui/material'
 import { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add';
+import Form from '@/components/Form'
+import Dial from '@/components/Dial'
 
 export default function Home() {
 
@@ -48,18 +50,23 @@ export default function Home() {
   }, [section])
 
   return (
-    <main className='h-screen drop-shadow-lg flex justify-center items-center'>
-      <section className="flex w-[85%] relative rounded-xl h-[800px] bg-white">
-        <NavBar section={section} setSection={setSection} />
-        <div className='relative w-[100%] h-[100%] overflow-auto p-4'>
+    <>
+      <main className='h-screen drop-shadow-lg flex justify-center items-center'>
+        <section className="flex w-[85%] relative rounded-xl h-[800px] bg-white">
+          <NavBar section={section} setSection={setSection} />
+          <div className='relative w-[100%] h-[100%] overflow-auto p-4'>
 
-          <TableComponent data={data} />
+            <TableComponent data={data} />
 
-        </div>
-          <Button variant='contained' className='w-16 h-16 rounded-full absolute right-6 bottom-4 bg-slate-400 hover:bg-slate-500'>
+          </div>
+          <Dial/>
+          {/* <Button variant='contained' className='w-16 h-16 rounded-full absolute right-6 bottom-4 bg-slate-400 hover:bg-slate-500'>
             <AddIcon />
-            </Button>
-      </section>
-    </main>
+          </Button> */}
+        </section>
+      </main>
+      {/* <Form/> */}
+    </>
+
   )
 }
