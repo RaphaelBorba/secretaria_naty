@@ -1,16 +1,14 @@
 import NavBar from '@/components/NavBar'
 import TableComponent from '@/components/Table'
-import { Client } from '@/protocols'
+import { Client, Conductor, Route, Vehicle } from '@/protocols'
 import api from '@/service/API'
 import { useEffect, useState } from 'react'
 
 export default function Home() {
 
-  const [data, setData] = useState<Client[]>()
+  const [data, setData] = useState<Client[] | Conductor[] | Route[] | Vehicle[]>()
   const [section, setSection] = useState<'client' | 'conductor' | 'route' | 'vehicle'>('client')
-
-  console.log(data)
-
+  
   useEffect(() => {
 
     async function getData() {

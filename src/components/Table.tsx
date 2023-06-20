@@ -5,11 +5,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Client } from '@/protocols';
+import { Client, Conductor, Route, Vehicle } from '@/protocols';
 
 interface TableComponentProps {
 
-    data: Client[] | undefined
+    data: Client[] | Conductor[] | Route[] | Vehicle[] | undefined
 }
 
 export default function TableComponent({ data }: TableComponentProps) {
@@ -19,33 +19,20 @@ export default function TableComponent({ data }: TableComponentProps) {
             <Table >
                 <TableHead>
                     <TableRow>
-                        <TableCell align="center"><b>Id</b></TableCell>
-                        <TableCell align="center"><b>Numero Documento</b></TableCell>
-                        <TableCell align="center"><b>Tipo Documento</b></TableCell>
-                        <TableCell align="center"><b>Nome</b></TableCell>
-                        <TableCell align="center"><b>Logradouro</b></TableCell>
-                        <TableCell align="center"><b>Número</b></TableCell>
-                        <TableCell align="center"><b>Bairro</b></TableCell>
-                        <TableCell align="center"><b>Cidade</b></TableCell>
-                        <TableCell align="center"><b>UF</b></TableCell>
+                        {
+                            data === undefined || !data[0] ? ''
+                            :
+                            Object.keys(data[0]).map((e:string)=> <TableCell key={e} align="center"><b>{e}</b></TableCell>)
+                        }
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {
-                        data === undefined ? ''
+                        data === undefined || !data[0] ? ''
                         :
-                        data.map((e: Client) => (
+                         data.map((e) => (
                             <TableRow key={e.id}>
-
-                                <TableCell align="center">{e.id}</TableCell>
-                                <TableCell align="center">{e.numeroDocumento}</TableCell>
-                                <TableCell align="center">{e.tipoDocumento}</TableCell>
-                                <TableCell align="center">{e.nome}</TableCell>
-                                <TableCell align="center">{e.logradouro}</TableCell>
-                                <TableCell align="center">{e.numero}</TableCell>
-                                <TableCell align="center">{e.bairro}</TableCell>
-                                <TableCell align="center">{e.cidade}</TableCell>
-                                <TableCell align="center">{e.uf}</TableCell>
+                                {Object.values(e).map((elem:string|number)=><TableCell key={elem} align="center">{elem?elem:'-'}</TableCell>)}
                             </TableRow>
                         ))}
                 </TableBody>
