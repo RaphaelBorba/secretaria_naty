@@ -7,19 +7,37 @@ import { useEffect, useState } from 'react'
 export default function Home() {
 
   const [data, setData] = useState<Client[]>()
-  const [section, setSection] = useState<'client' | 'conductor' |'route' | 'vehicle'>('client')
+  const [section, setSection] = useState<'client' | 'conductor' | 'route' | 'vehicle'>('client')
 
-  
+  console.log(data)
 
   useEffect(() => {
 
     async function getData() {
 
+      let url
+
+      switch (section) {
+        case 'client':
+          url = '/api/v1/Cliente'
+          break
+        case 'conductor':
+          url = '/api/v1/Condutor'
+          break
+        case 'route':
+          url = '/api/v1/Deslocamento'
+          break
+        case 'vehicle':
+          url = '/api/v1/Veiculo'
+          break
+      }
+
       try {
-        
-        const apiResponse = await api.get<Client[]>('/api/v1/Cliente')
-  
+
+        const apiResponse = await api.get<Client[]>(url)
+
         setData(apiResponse.data)
+
       } catch (error) {
         console.log(error)
       }
@@ -27,12 +45,12 @@ export default function Home() {
     }
 
     getData()
-  }, [])
+  }, [section])
 
   return (
-    <main className='h-screen flex justify-center items-center'>
+    <main className='h-screen drop-shadow-lg flex justify-center items-center'>
       <section className="flex w-[85%]  rounded-xl h-[800px] bg-white">
-          <NavBar section={section} setSection={setSection}/>
+        <NavBar section={section} setSection={setSection} />
         <div className='w-[100%] h-[100%] overflow-auto p-4'>
 
           <TableComponent data={data} />
