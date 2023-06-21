@@ -5,10 +5,6 @@ import api from '@/service/API'
 import { useEffect, useState } from 'react'
 import LayoutForm from '@/components/LayoutForm'
 import Dial from '@/components/Dial'
-import ClientForm from '@/components/ClientForm'
-import VehicleForm from '@/components/VehicleForm'
-import ConductorForm from '@/components/ConductorForm'
-import RouteForm from '@/components/RouteForm'
 
 export default function Home() {
 
@@ -74,10 +70,10 @@ export default function Home() {
         </section>
       </main>
 
-      {showForm === 'client' ? <LayoutForm setShowForm={setShowForm} title="Cliente Novo" type={<ClientForm />} /> :
-       showForm === 'vehicle' ? <LayoutForm setShowForm={setShowForm} title="Veículo Novo" type={<VehicleForm />} /> :
-       showForm === 'conductor' ? <LayoutForm setShowForm={setShowForm} title="Condutor Novo" type={<ConductorForm />} /> :
-       showForm === 'route' ? <LayoutForm setShowForm={setShowForm} title="Deslocamento Novo" type={<RouteForm />} /> :''}
+      {showForm === 'client' ? <LayoutForm showForm={showForm} setShowForm={setShowForm} title="Cliente Novo"  /> :
+       showForm === 'vehicle' ? <LayoutForm showForm={showForm} setShowForm={setShowForm} title="Veículo Novo"  /> :
+       showForm === 'conductor' ? <LayoutForm showForm={showForm} setShowForm={setShowForm} title="Condutor Novo"  /> :
+       showForm === 'route' ? <LayoutForm showForm={showForm} setShowForm={setShowForm} title="Deslocamento Novo" /> :''}
     </>
 
   )

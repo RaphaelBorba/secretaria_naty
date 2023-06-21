@@ -22,7 +22,7 @@ export default function TableComponent({ data }: TableComponentProps) {
                         {
                             data === undefined || !data[0] ? ''
                             :
-                            Object.keys(data[0]).map((e:string)=> <TableCell key={e} align="center"><b>{e}</b></TableCell>)
+                            Object.keys(data[0]).map((e:string,i:number)=> <TableCell key={i} align="center"><b>{e}</b></TableCell>)
                         }
                     </TableRow>
                 </TableHead>
@@ -32,7 +32,7 @@ export default function TableComponent({ data }: TableComponentProps) {
                         :
                          data.map((e) => (
                             <TableRow key={e.id}>
-                                {Object.values(e).map((elem:string|number)=><TableCell key={elem} align="center">{elem?elem:'-'}</TableCell>)}
+                                {Object.values(e).map((elem:string|number, i:number)=><TableCell key={i} align="center">{elem?elem:'-'}</TableCell>)}
                             </TableRow>
                         ))}
                 </TableBody>
