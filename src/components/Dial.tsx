@@ -3,8 +3,13 @@ import Client from '@mui/icons-material/PersonOutlineOutlined';
 import Vehicle from '@mui/icons-material/DirectionsCarOutlined';
 import Route from '@mui/icons-material/RouteOutlined';
 import Conductor from '@mui/icons-material/EngineeringOutlined';
+import { Dispatch, SetStateAction } from "react";
 
-export default function Dial() {
+interface DialProps {
+    setShowForm: Dispatch<SetStateAction<"client" | "conductor" | "route" | "vehicle" | "none">>
+}
+
+export default function Dial({setShowForm}:DialProps) {
 
     
     return (
@@ -19,21 +24,25 @@ export default function Dial() {
                     icon={<Vehicle className="text-white" />}
                     tooltipTitle="Novo Veículo"
                     className="bg-slate-400 hover:bg-slate-500"
+                    onClick={()=>setShowForm('vehicle')}
                 />
                 <SpeedDialAction
                     icon={<Route className="text-white" />}
                     tooltipTitle="Novo Deslocamento"
                     className="bg-slate-400 hover:bg-slate-500"
+                    onClick={()=>setShowForm('route')}
                 />
                 <SpeedDialAction
                     icon={<Conductor className="text-white" />}
                     tooltipTitle="Novo Condutor"
                     className="bg-slate-400 hover:bg-slate-500"
+                    onClick={()=>setShowForm('conductor')}
                 />
                 <SpeedDialAction
                     icon={<Client className="text-white" />}
                     tooltipTitle="Novo Cliente"
                     className="bg-slate-400 hover:bg-slate-500"
+                    onClick={()=>setShowForm('client')}
                 />
             </SpeedDial>
         </>

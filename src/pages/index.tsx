@@ -2,21 +2,26 @@ import NavBar from '@/components/NavBar'
 import TableComponent from '@/components/Table'
 import { Client, Conductor, Route, Vehicle } from '@/protocols'
 import api from '@/service/API'
-import { Button } from '@mui/material'
 import { useEffect, useState } from 'react'
-import AddIcon from '@mui/icons-material/Add';
-import Form from '@/components/Form'
+import LayoutForm from '@/components/LayoutForm'
 import Dial from '@/components/Dial'
+import ClientForm from '@/components/ClientForm'
+import VehicleForm from '@/components/VehicleForm'
+import ConductorForm from '@/components/ConductorForm'
+import RouteForm from '@/components/RouteForm'
 
 export default function Home() {
 
   const [data, setData] = useState<Client[] | Conductor[] | Route[] | Vehicle[]>()
   const [section, setSection] = useState<'client' | 'conductor' | 'route' | 'vehicle'>('client')
+  const [showForm, setShowForm] = useState<'client' | 'conductor' | 'route' | 'vehicle' | 'none'>('none')
+  const [isloading, setIsloading] = useState(false)
 
   useEffect(() => {
 
     async function getData() {
 
+      setIsloading(true)
       let url
 
       switch (section) {
@@ -39,6 +44,7 @@ export default function Home() {
         const apiResponse = await api.get<Client[]>(url)
 
         setData(apiResponse.data)
+        setIsloading(false)
 
       } catch (error) {
         console.log(error)
@@ -53,19 +59,25 @@ export default function Home() {
     <>
       <main className='h-screen drop-shadow-lg flex justify-center items-center'>
         <section className="flex w-[85%] relative rounded-xl h-[800px] bg-white">
-          <NavBar section={section} setSection={setSection} />
-          <div className='relative w-[100%] h-[100%] overflow-auto p-4'>
-
-            <TableComponent data={data} />
-
-          </div>
-          <Dial/>
-          {/* <Button variant='contained' className='w-16 h-16 rounded-full absolute right-6 bottom-4 bg-slate-400 hover:bg-slate-500'>
-            <AddIcon />
-          </Button> */}
+          <NavBar isLoading={isloading} section={section} setSection={setSection} />
+          {
+            data === undefined ? <h1>Erro no carregamento</h1>
+              :
+              data[0] ?
+                <div className='relative w-[100%] h-[100%] overflow-auto p-4 pb-12'>
+                  <TableComponent data={data} />
+                </div>
+                :
+                <h1 className=''>Não há registros!</h1>
+          }
+          <Dial setShowForm={setShowForm} />
         </section>
       </main>
-      {/* <Form/> */}
+
+      {showForm === 'client' ? <LayoutForm setShowForm={setShowForm} title="Cliente Novo" type={<ClientForm />} /> :
+       showForm === 'vehicle' ? <LayoutForm setShowForm={setShowForm} title="Veículo Novo" type={<VehicleForm />} /> :
+       showForm === 'conductor' ? <LayoutForm setShowForm={setShowForm} title="Condutor Novo" type={<ConductorForm />} /> :
+       showForm === 'route' ? <LayoutForm setShowForm={setShowForm} title="Deslocamento Novo" type={<RouteForm />} /> :''}
     </>
 
   )
