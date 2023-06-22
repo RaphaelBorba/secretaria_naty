@@ -1,9 +1,10 @@
-import { Button } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useState } from "react";
 import RouteForm from "./RouteForm";
 import ConductorForm from "./ConductorForm";
 import VehicleForm from "./VehicleForm";
 import ClientForm from "./ClientForm";
+import api from "@/service/API";
 
 interface LayoutFormProps {
     setShowForm: Dispatch<SetStateAction<"client" | "conductor" | "route" | "vehicle" | "none">>;
@@ -45,32 +46,59 @@ export default function LayoutForm({ setShowForm, showForm, title }: LayoutFormP
         anoFabricacao: 0,
         kmAtual: 0
     })
+    const [erro, setErro] = useState('')
 
-     const handleForm = (e: ChangeEvent) => {
- 
-         const target = e.target as HTMLTextAreaElement
-         const { name, value } = target
+    const handleForm = (e: ChangeEvent) => {
 
-         switch(showForm){
+        const target = e.target as HTMLTextAreaElement
+        const { name, value } = target
+
+        switch (showForm) {
 
             case "client":
-                setClientForm({...clientForm, [name]:value})
+                setClientForm({ ...clientForm, [name]: value })
                 break;
             case "conductor":
-                setConductorForm({...conductorForm, [name]:value})
+                setConductorForm({ ...conductorForm, [name]: value })
                 break;
             case "route":
-                setRouteForm({...routeForm, [name]:value})
+                setRouteForm({ ...routeForm, [name]: value })
                 break;
             case "vehicle":
-                setVehicleForm({...vehicleForm, [name]:value})
+                setVehicleForm({ ...vehicleForm, [name]: value })
                 break;
-            
-         }
-     }
 
-    const handleSubmit = (e: FormEvent) => {
+        }
+    }
+
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
+
+        try {
+            let response
+            switch (showForm) {
+                case "client":
+                    response = await api.post('/api/v1/Cliente', clientForm)
+                    break
+                case "conductor":
+                    response = await api.post('/api/v1/Condutor', conductorForm)
+                    break
+                case "route":
+                    response = await api.post('/api/v1/Deslocamento/IniciarDeslocamento', routeForm)
+                    break
+                case "vehicle":
+                    response = await api.post('/api/v1/Veiculo', vehicleForm)
+                    break
+            }
+
+            console.log(response)
+
+        } catch (error:any) {
+            
+            setErro(error.response.data)
+            return
+        }
+
         setShowForm('none')
     }
 
@@ -91,8 +119,8 @@ export default function LayoutForm({ setShowForm, showForm, title }: LayoutFormP
                 <div className="grid grid-cols-2 gap-10 p-9">
 
                     {showForm === 'client' ? <ClientForm clientForm={clientForm} handleForm={handleForm} /> :
-                        showForm === 'vehicle' ? <VehicleForm vehicleForm={vehicleForm} handleForm={handleForm} />:
-                            showForm === 'conductor' ? <ConductorForm conductorForm={conductorForm} handleForm={handleForm} />:
+                        showForm === 'vehicle' ? <VehicleForm vehicleForm={vehicleForm} handleForm={handleForm} /> :
+                            showForm === 'conductor' ? <ConductorForm conductorForm={conductorForm} handleForm={handleForm} /> :
                                 showForm === 'route' ? <RouteForm routeForm={routeForm} handleForm={handleForm} /> : ''}
                 </div>
                 <div className="mx-auto flex gap-10">
@@ -106,6 +134,8 @@ export default function LayoutForm({ setShowForm, showForm, title }: LayoutFormP
                         className="w-32 bg-green-500 hover:bg-green-600 font-bold" >Criar</Button>
                 </div>
 
+                {erro ? <Alert className="m-5" severity="error" >{erro}</Alert>
+                    : ''}
             </form>
 
         </>
