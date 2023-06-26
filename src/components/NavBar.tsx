@@ -15,7 +15,7 @@ interface NavBarProps {
 export default function NavBar({ section, setSection, isLoading }: NavBarProps) {
 
     return (
-        <nav className={`h-[100%] w-48 gap-7 rounded-l-xl bg-slate-400 flex flex-col justify-center items-center ${isLoading?'pointer-events-none':''}`}>
+        <nav className={` box-border p-4 h-[100%] w-[10%] gap-7 rounded-l-xl bg-slate-400 flex flex-col justify-center items-center ${isLoading?'pointer-events-none':''}`}>
             <div
                 onClick={() =>setSection('client')}
                 className={`${section==='client'?'bg-slate-500':''} w-[100%] flex flex-col items-center cursor-pointer transition-colors p-4 duration-300 hover:bg-slate-500`}>
