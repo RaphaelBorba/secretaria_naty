@@ -59,7 +59,7 @@ export default function Home() {
             :
 
             data[0] ?
-              <div className='relative w-[90%] h-[100%] overflow-auto p-4 pb-12'>
+              <div className='relative w-[100%] h-[100%] overflow-auto p-4 pb-12'>
                 <TableComponent type={section} data={data} />
               </div>
               :
