@@ -11,11 +11,29 @@ import { useRouter } from 'next/router';
 interface TableComponentProps {
 
     data: Client[] | Conductor[] | Route[] | Vehicle[] | undefined
+    type: 'vehicle' | 'conductor' | 'route' | 'client';
 }
 
-export default function TableComponent({ data }: TableComponentProps) {
+export default function TableComponent({ data, type }: TableComponentProps) {
 
     const router = useRouter()
+    let url =''
+
+    switch(type){
+
+        case 'vehicle':
+            url = 'Veiculo'
+            break;
+        case 'conductor':
+            url = 'Condutor'
+            break;
+        case 'route':
+            url = 'Deslocamento'
+            break;
+        case 'client':
+            url = 'Cliente'
+            break;
+    }
 
     return (
         <TableContainer className='h-fit border border-b-0' component={Paper}>
@@ -35,7 +53,7 @@ export default function TableComponent({ data }: TableComponentProps) {
                             :
                             data.map((e) => (
 
-                                <TableRow onClick={() => router.replace(`/Veiculo/${e.id}`)} key={e.id}>
+                                <TableRow onClick={() => router.replace(`/${url}/${e.id}`)} key={e.id}>
                                     {Object.values(e).map((elem: string | number, i: number) => <TableCell key={i} align="center">{elem ? elem : '-'}</TableCell>)}
                                 </TableRow>
 
