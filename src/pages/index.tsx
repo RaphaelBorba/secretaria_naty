@@ -5,6 +5,7 @@ import api from '@/service/API'
 import { useEffect, useState } from 'react'
 import LayoutForm from '@/components/LayoutForm'
 import Dial from '@/components/Dial'
+import Board from '@/components/Board'
 
 export default function Home() {
 
@@ -36,9 +37,7 @@ export default function Home() {
       }
 
       try {
-
         const apiResponse = await api.get<Client[]>(url)
-
         setData(apiResponse.data)
         setIsloading(false)
 
@@ -53,27 +52,26 @@ export default function Home() {
 
   return (
     <>
-      <main className='h-screen drop-shadow-lg flex justify-center items-center'>
-        <section className="flex w-[85%] relative rounded-xl h-[800px] bg-white">
-          <NavBar isLoading={isloading} section={section} setSection={setSection} />
-          {
-            data === undefined ? <h1>Erro no carregamento</h1>
-              :
-              data[0] ?
-                <div className='relative w-[100%] h-[100%] overflow-auto p-4 pb-12'>
-                  <TableComponent data={data} />
-                </div>
-                :
-                <h1 className=''>Não há registros!</h1>
-          }
-          <Dial setShowForm={setShowForm} />
-        </section>
-      </main>
+      <Board>
+        <NavBar isLoading={isloading} section={section} setSection={setSection} />
+        {
+          data === undefined ? <h1>Erro no carregamento</h1>
+            :
 
-      {showForm === 'client' ? <LayoutForm showForm={showForm} setShowForm={setShowForm} title="Cliente Novo"  /> :
-       showForm === 'vehicle' ? <LayoutForm showForm={showForm} setShowForm={setShowForm} title="Veículo Novo"  /> :
-       showForm === 'conductor' ? <LayoutForm showForm={showForm} setShowForm={setShowForm} title="Condutor Novo"  /> :
-       showForm === 'route' ? <LayoutForm showForm={showForm} setShowForm={setShowForm} title="Deslocamento Novo" /> :''}
+            data[0] ?
+              <div className='relative w-[100%] h-[100%] overflow-auto p-4 pb-12'>
+                <TableComponent data={data} />
+              </div>
+              :
+              <h1 className=''>Não há registros!</h1>
+        }
+        <Dial setShowForm={setShowForm} />
+      </Board>
+
+      {showForm === 'client' ? <LayoutForm showForm={showForm} setShowForm={setShowForm} title="Cliente Novo" /> :
+        showForm === 'vehicle' ? <LayoutForm showForm={showForm} setShowForm={setShowForm} title="Veículo Novo" /> :
+          showForm === 'conductor' ? <LayoutForm showForm={showForm} setShowForm={setShowForm} title="Condutor Novo" /> :
+            showForm === 'route' ? <LayoutForm showForm={showForm} setShowForm={setShowForm} title="Deslocamento Novo" /> : ''}
     </>
 
   )
