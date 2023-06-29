@@ -53,7 +53,7 @@ export default function TableComponent({ data, type }: TableComponentProps) {
                             :
                             data.map((e) => (
 
-                                <TableRow onClick={() => router.replace(`/${url}/${e.id}`)} key={e.id}>
+                                <TableRow onClick={() => router.replace(`/${url}/${e.id}`)} className='cursor-pointer transition-colors hover:bg-slate-100' key={e.id}>
                                     {Object.values(e).map((elem: string | number, i: number) => <TableCell key={i} align="center">{elem ? elem : '-'}</TableCell>)}
                                 </TableRow>
 
